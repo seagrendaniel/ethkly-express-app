@@ -6,11 +6,19 @@ const cookie = require('cookie');
 const nonce = require('nonce')();
 const querystring = require('querystring');
 const request = require('request-promise');
+const Shopify = require('shopify-api-node');
+const ShopifyToken = require('shopify-token');
 
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, read_collection_listings';
-const forwardingAddress = "https://898e82fe.ngrok.io"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "https://1e9c341e.ngrok.io"; // Replace this with your HTTPS Forwarding address
+
+const shopify = new Shopify({
+    shopName: 'ethkly-green.myshopify.com',
+    apiKey: apiKey,
+    
+})
 
 app.get('/shopify', (req, res) => {
     const shop = req.query.shop;
@@ -101,3 +109,4 @@ app.get('/shopify', (req, res) => {
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
 });
+
