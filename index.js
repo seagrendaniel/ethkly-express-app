@@ -93,18 +93,82 @@ app.get('/shopify/callback', (req, res) => {
                 // DONE: Use access token to make API call to 'shop' endpoint
                 // const shopRequestUrl = 'https://' + shop + '/admin/api/2019-10/products.json?since_id=632910392';
                 const productRequestUrl = 'https://' + shop + '/admin/products.json';
-                // const shopRequestUrl = 'https://' + shop + '/views/home.ejs';
+                // const product
                 const productRequestHeaders = {
                     'X-Shopify-Access-Token': accessToken,
                 };
 
-                request.get(productRequestUrl, { headers: productRequestHeaders })
-                    .then((productResponse) => {
-                        res.status(200).end(productResponse);
+                let options = {
+                    method: 'GET',
+                    uri: productRequestUrl,
+                    json: true,
+                    headers: {
+                        'X-Shopify-Access-Token': accessToken,
+                        'content-type': 'application/json'
+                    }
+                }
+
+                request(options)
+                    .then(function (parsedBody) {
+                        let filteredProducts = {
+                            products: [{
+                                clothingType: parsedBody.products[0].title,
+                                desc: parsedBody.products[0].body_html,
+                                vendor: parsedBody.products[0].vendor
+                            }, {
+                                clothingType: parsedBody.products[1].title,
+                                desc: parsedBody.products[1].body_html,
+                                vendor: parsedBody.products[1].vendor
+                            }, {
+                                clothingType: parsedBody.products[2].title,
+                                desc: parsedBody.products[2].body_html,
+                                vendor: parsedBody.products[2].vendor
+                            }, {
+                                clothingType: parsedBody.products[3].title,
+                                desc: parsedBody.products[3].body_html,
+                                vendor: parsedBody.products[3].vendor
+                            }, {
+                                clothingType: parsedBody.products[4].title,
+                                desc: parsedBody.products[4].body_html,
+                                vendor: parsedBody.products[4].vendor
+                            }
+
+                            ]
+                        }
+                        console.log(filteredProducts)
+                        res.json(filteredProducts)
                     })
-                    .catch((error) => {
-                        res.status(error.statusCode).send(error.error.error_description);
+                    .catch(function (err) {
+                        console.log(err)
+                        res.json(err)
                     });
+
+                // request.get(productRequestUrl, { 
+                //     headers: productRequestHeaders,
+                //     'content-type': 'application/json' 
+                // })
+                // .then(function (parsedBody){
+                //     console.log(parsedBody.products[1].title)
+                //     for(let i = 0; i < parsedBody.products.length; i++) {
+                //         res.json(parsedBody.products[i].title)
+                //     }
+                // })
+                // .catch(function(err){
+                //     console.log(err)
+                //     res.json(err)
+                // });
+
+                // request.get(productRequestUrl, { 
+                //     headers: productRequestHeaders,
+                //     'content-type': 'application/json' 
+                // })
+                //     .then((productResponse) => {
+                //         res.status(200).end(productResponse);
+                //     })
+                //     .catch((error) => {
+                //         res.status(error.statusCode).send(error.error.error_description);
+                //     });
+
             })
             .catch((error) => {
                 res.status(error.statusCode).send(error.error.error_description);
