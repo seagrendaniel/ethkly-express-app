@@ -45,6 +45,9 @@ app.get('/shopify', (req, res) => {
     }
 });
 
+
+// callback for redirect after install
+
 app.get('/shopify/callback', (req, res) => {
     const { shop, hmac, code, state } = req.query;
     const stateCookie = cookie.parse(req.headers.cookie).state;
@@ -91,9 +94,7 @@ app.get('/shopify/callback', (req, res) => {
             .then((accessTokenResponse) => {
                 const accessToken = accessTokenResponse.access_token;
                 // DONE: Use access token to make API call to 'shop' endpoint
-                // const shopRequestUrl = 'https://' + shop + '/admin/api/2019-10/products.json?since_id=632910392';
                 const productRequestUrl = 'https://' + shop + '/admin/products.json';
-                // const product
                 const productRequestHeaders = {
                     'X-Shopify-Access-Token': accessToken,
                 };
@@ -110,32 +111,44 @@ app.get('/shopify/callback', (req, res) => {
 
                 request(options)
                     .then(function (parsedBody) {
+                        // let clothingDescArr = []
+                        // for(let i = 0; i < parsedBody.products.length; i++) {
+                        //     let clothingDesc = parsedBody.products[i].body_html.split();
+                        //     clothingDesc = clothingDesc.splice(29);
+                        //     for(let j = 0; j < 7; j++) {
+                        //         clothingDesc.pop();
+                        //     }
+                        //     clothingDesc = clothingDesc.join('sgw');
+                        //     console.log(clothingDesc);
+                        //     clothingDescArr.push(clothingDesc);
+
+                        // }
                         let filteredProducts = {
                             products: [{
                                 clothingType: parsedBody.products[0].title,
-                                desc: parsedBody.products[0].body_html,
+                                description: parsedBody.products[0].body_html,
                                 vendor: parsedBody.products[0].vendor
                             }, {
                                 clothingType: parsedBody.products[1].title,
-                                desc: parsedBody.products[1].body_html,
+                                description: parsedBody.products[1].body_html,
                                 vendor: parsedBody.products[1].vendor
                             }, {
                                 clothingType: parsedBody.products[2].title,
-                                desc: parsedBody.products[2].body_html,
+                                description: parsedBody.products[2].body_html,
                                 vendor: parsedBody.products[2].vendor
                             }, {
                                 clothingType: parsedBody.products[3].title,
-                                desc: parsedBody.products[3].body_html,
+                                description: parsedBody.products[3].body_html,
                                 vendor: parsedBody.products[3].vendor
                             }, {
                                 clothingType: parsedBody.products[4].title,
-                                desc: parsedBody.products[4].body_html,
+                                description: parsedBody.products[4].body_html,
                                 vendor: parsedBody.products[4].vendor
                             }
 
                             ]
                         }
-                        console.log(filteredProducts)
+                        console.log(parsedBody.products)
                         res.json(filteredProducts)
                     })
                     .catch(function (err) {
