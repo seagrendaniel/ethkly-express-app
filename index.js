@@ -111,18 +111,7 @@ app.get('/shopify/callback', (req, res) => {
 
                 request(options)
                     .then(function (parsedBody) {
-                        // let clothingDescArr = []
-                        // for(let i = 0; i < parsedBody.products.length; i++) {
-                        //     let clothingDesc = parsedBody.products[i].body_html.split();
-                        //     clothingDesc = clothingDesc.splice(29);
-                        //     for(let j = 0; j < 7; j++) {
-                        //         clothingDesc.pop();
-                        //     }
-                        //     clothingDesc = clothingDesc.join('sgw');
-                        //     console.log(clothingDesc);
-                        //     clothingDescArr.push(clothingDesc);
 
-                        // }
                         let filteredProducts = {
                             products: [{
                                 clothingType: parsedBody.products[0].title,
