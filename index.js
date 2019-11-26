@@ -185,3 +185,10 @@ app.listen(3000, () => {
     console.log('Example app listening on port 3000!');
 });
 
+
+function getJson() {
+    //take JSON data
+        app.get('/shopify/callback'. (req, res) => {
+            req.get()
+        // get JSON data
+}
